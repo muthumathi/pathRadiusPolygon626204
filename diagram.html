@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Polygon Arrays</title>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+
+        #map {
+            height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        // This example creates a simple polygon representing the Bermuda Triangle.
+        // When the user clicks on the polygon an info window opens, showing
+        // information about the polygon's coordinates.
+
+        var map;
+        var infoWindow;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 14,
+                center: {
+                    lat: 12.9555775,
+                    lng: 77.637092
+                },
+                mapTypeId: 'terrain'
+            });
+
+            // Define the LatLng coordinates for the polygon.
+            var triangleCoords = [
+
+                //Start
+                {
+                    lat: 12.9555775,
+                    lng: 77.65509202
+                }, {
+                    lat: 12.95958664,
+                    lng: 77.6592502
+                }, {
+                    lat: 12.96315811,
+                    lng: 77.65738938
+                }, {
+                    lat: 12.96573611,
+                    lng: 77.65423932
+                }, {
+                    lat: 12.96863715,
+                    lng: 77.6522597
+                }, {
+                    lat: 12.97043394,
+                    lng: 77.6492407
+                }, {
+                    lat: 12.97317272,
+                    lng: 77.64699201
+                }, {
+                    lat: 12.97553725,
+                    lng: 77.64417182
+                }, {
+                    lat: 12.97740501,
+                    lng: 77.6408428
+                }, {
+                    lat: 12.97404769,
+                    lng: 77.637092
+                }, {
+                    lat: 12.97376709,
+                    lng: 77.63396633
+                }, {
+                    lat: 12.97119817,
+                    lng: 77.63155127
+                }, {
+                    lat: 12.96837402,
+                    lng: 77.62989199
+                }, {
+                    lat: 12.97043394,
+                    lng: 77.6249433
+                }, {
+                    lat: 12.96626267,
+                    lng: 77.62468207
+                }, {
+                    lat: 12.96619786,
+                    lng: 77.61916526
+                }, {
+                    lat: 12.96031538,
+                    lng: 77.62440614
+                }, {
+                    lat: 12.95734152,
+                    lng: 77.62734239
+                }, {
+                    lat: 12.9555775,
+                    lng: 77.62809199
+                }, {
+                    lat: 12.95413421,
+                    lng: 77.62911505
+                }, {
+                    lat: 12.95273477,
+                    lng: 77.62948048
+                }, {
+                    lat: 12.95188346,
+                    lng: 77.63085661
+                }, {
+                    lat: 12.95023492,
+                    lng: 77.63088703
+                }, {
+                    lat: 12.95062535,
+                    lng: 77.63304243
+                }, {
+                    lat: 12.95157859,
+                    lng: 77.634842
+                }, {
+                    lat: 12.95210624,
+                    lng: 77.63586073
+                }, {
+                    lat: 12.94375427,
+                    lng: 77.63912369
+                }, {
+                    lat: 12.94169246,
+                    lng: 77.64201709
+                }, {
+                    lat: 12.94518032,
+                    lng: 77.64294201
+                }, {
+                    lat: 12.94708811,
+                    lng: 77.64403411
+                }, {
+                    lat: 12.94607957,
+                    lng: 77.64812305
+                }, {
+                    lat: 12.94957469,
+                    lng: 77.64722451
+                }, {
+                    lat: 12.95210305,
+                    lng: 77.64639497
+                }, {
+                    lat: 12.95397384,
+                    lng: 77.64595528
+                }
+
+
+                //End
+
+
+
+
+            ];
+
+            // Construct the polygon.
+            var bermudaTriangle = new google.maps.Polygon({
+                paths: triangleCoords,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 3,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35
+            });
+            bermudaTriangle.setMap(map);
+
+            // Add a listener for the click event.
+            bermudaTriangle.addListener('click', showArrays);
+
+            infoWindow = new google.maps.InfoWindow;
+        }
+
+        /** @this {google.maps.Polygon} */
+        function showArrays(event) {
+            // Since this polygon has only one path, we can call getPath() to return the
+            // MVCArray of LatLngs.
+            var vertices = this.getPath();
+
+            var contentString = '<b>Customized polygon</b><br>' +
+                'Clicked location: <br>' + event.latLng.lat() + ',' + event.latLng.lng() +
+                '<br>';
+
+            // Iterate over the vertices.
+            for (var i = 0; i < vertices.getLength(); i++) {
+                var xy = vertices.getAt(i);
+                contentString += '<br>' + 'Coordinate ' + i + ':<br>' + xy.lat() + ',' +
+                    xy.lng();
+            }
+
+            // Replace the info window's content and position.
+            infoWindow.setContent(contentString);
+            infoWindow.setPosition(event.latLng);
+
+            infoWindow.open(map);
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+    </script>
+</body>
+
+</html>
